@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'main_window.ui'
 **
-** Created: Thu Mar 10 02:00:48 2011
+** Created: Thu Mar 10 12:43:27 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -16,6 +16,7 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
 #include <QtGui/QFormLayout>
+#include <QtGui/QFrame>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QRadioButton>
@@ -49,16 +50,28 @@ public:
     QCheckBox *chk_enable_touchpad;
     QWidget *tab_als;
     QFormLayout *formLayout;
+    QCheckBox *chk_enable_als_power;
     QLabel *lbl_als_lux_threshold;
     QSpinBox *spin_als_lux_threshold;
-    QCheckBox *chk_enable_als_power;
+    QFrame *line;
+    QLabel *lbl_als_model;
+    QLabel *lbl_als_lux;
+    QLabel *lbl_als_backlight;
+    QLabel *lbl_als_model_val;
+    QLabel *lbl_als_lux_val;
+    QLabel *lbl_als_backlight_val;
     QButtonGroup *btngrp_battery_protection;
 
     void setupUi(QWidget *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(448, 252);
+        MainWindow->resize(399, 203);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
         verticalLayout = new QVBoxLayout(MainWindow);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         tabWidget = new QTabWidget(MainWindow);
@@ -140,6 +153,12 @@ public:
         tab_als->setObjectName(QString::fromUtf8("tab_als"));
         formLayout = new QFormLayout(tab_als);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+        chk_enable_als_power = new QCheckBox(tab_als);
+        chk_enable_als_power->setObjectName(QString::fromUtf8("chk_enable_als_power"));
+
+        formLayout->setWidget(0, QFormLayout::LabelRole, chk_enable_als_power);
+
         lbl_als_lux_threshold = new QLabel(tab_als);
         lbl_als_lux_threshold->setObjectName(QString::fromUtf8("lbl_als_lux_threshold"));
 
@@ -151,10 +170,42 @@ public:
 
         formLayout->setWidget(1, QFormLayout::FieldRole, spin_als_lux_threshold);
 
-        chk_enable_als_power = new QCheckBox(tab_als);
-        chk_enable_als_power->setObjectName(QString::fromUtf8("chk_enable_als_power"));
+        line = new QFrame(tab_als);
+        line->setObjectName(QString::fromUtf8("line"));
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
 
-        formLayout->setWidget(0, QFormLayout::LabelRole, chk_enable_als_power);
+        formLayout->setWidget(2, QFormLayout::SpanningRole, line);
+
+        lbl_als_model = new QLabel(tab_als);
+        lbl_als_model->setObjectName(QString::fromUtf8("lbl_als_model"));
+
+        formLayout->setWidget(3, QFormLayout::LabelRole, lbl_als_model);
+
+        lbl_als_lux = new QLabel(tab_als);
+        lbl_als_lux->setObjectName(QString::fromUtf8("lbl_als_lux"));
+
+        formLayout->setWidget(4, QFormLayout::LabelRole, lbl_als_lux);
+
+        lbl_als_backlight = new QLabel(tab_als);
+        lbl_als_backlight->setObjectName(QString::fromUtf8("lbl_als_backlight"));
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, lbl_als_backlight);
+
+        lbl_als_model_val = new QLabel(tab_als);
+        lbl_als_model_val->setObjectName(QString::fromUtf8("lbl_als_model_val"));
+
+        formLayout->setWidget(3, QFormLayout::FieldRole, lbl_als_model_val);
+
+        lbl_als_lux_val = new QLabel(tab_als);
+        lbl_als_lux_val->setObjectName(QString::fromUtf8("lbl_als_lux_val"));
+
+        formLayout->setWidget(4, QFormLayout::FieldRole, lbl_als_lux_val);
+
+        lbl_als_backlight_val = new QLabel(tab_als);
+        lbl_als_backlight_val->setObjectName(QString::fromUtf8("lbl_als_backlight_val"));
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, lbl_als_backlight_val);
 
         tabWidget->addTab(tab_als, QString());
 
@@ -182,8 +233,14 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab_kbd_bl), QApplication::translate("MainWindow", "Keyboard Backlight", 0, QApplication::UnicodeUTF8));
         chk_enable_touchpad->setText(QApplication::translate("MainWindow", "Enable Touchpad", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_touchpad), QApplication::translate("MainWindow", "Touchpad", 0, QApplication::UnicodeUTF8));
-        lbl_als_lux_threshold->setText(QApplication::translate("MainWindow", "Luminance Threshold: ", 0, QApplication::UnicodeUTF8));
         chk_enable_als_power->setText(QApplication::translate("MainWindow", "Enable Ambient Light Sensor", 0, QApplication::UnicodeUTF8));
+        lbl_als_lux_threshold->setText(QApplication::translate("MainWindow", "Luminance Threshold: ", 0, QApplication::UnicodeUTF8));
+        lbl_als_model->setText(QApplication::translate("MainWindow", "Model:", 0, QApplication::UnicodeUTF8));
+        lbl_als_lux->setText(QApplication::translate("MainWindow", "Luminance:", 0, QApplication::UnicodeUTF8));
+        lbl_als_backlight->setText(QApplication::translate("MainWindow", "Backlight:", 0, QApplication::UnicodeUTF8));
+        lbl_als_model_val->setText(QApplication::translate("MainWindow", "ALS Model", 0, QApplication::UnicodeUTF8));
+        lbl_als_lux_val->setText(QApplication::translate("MainWindow", "ALS Luminance", 0, QApplication::UnicodeUTF8));
+        lbl_als_backlight_val->setText(QApplication::translate("MainWindow", "ALS Backlight", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_als), QApplication::translate("MainWindow", "ALS", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 

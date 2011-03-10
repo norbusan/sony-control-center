@@ -32,3 +32,15 @@ void write_int_to_file(char const* path, int val) {
     }
     fclose(fd);
 }
+
+char const* read_str_from_file(char const* path, char* buf, size_t buf_size) {
+    FILE* const fd = open_file(path, "r");
+    if (getline(&buf, &buf_size, fd) < 0) {
+        fprintf(stderr, "read_str_from_file: getline() failed - %s\n",
+                strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+    fclose(fd);
+
+    return buf;
+}

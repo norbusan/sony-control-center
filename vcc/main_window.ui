@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>252</height>
+    <width>399</width>
+    <height>203</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>VAIO Control Center</string>
@@ -135,6 +141,16 @@
        <string>ALS</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="chk_enable_als_power">
+         <property name="text">
+          <string>Enable Ambient Light Sensor</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="lbl_als_lux_threshold">
          <property name="text">
@@ -149,10 +165,52 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="chk_enable_als_power">
+       <item row="2" column="0" colspan="2">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="lbl_als_model">
          <property name="text">
-          <string>Enable Ambient Light Sensor</string>
+          <string>Model:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="lbl_als_lux">
+         <property name="text">
+          <string>Luminance:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="lbl_als_backlight">
+         <property name="text">
+          <string>Backlight:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="lbl_als_model_val">
+         <property name="text">
+          <string>ALS Model</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="lbl_als_lux_val">
+         <property name="text">
+          <string>ALS Luminance</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="lbl_als_backlight_val">
+         <property name="text">
+          <string>ALS Backlight</string>
          </property>
         </widget>
        </item>

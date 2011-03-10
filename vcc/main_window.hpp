@@ -2,6 +2,7 @@
 #define  MAIN_WINDOW_INC
 
 #include <QtGui>
+#include <string>
 
 #include "ui_main_window.h"
 extern "C" {
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QTimer _als_timer;
 
     void setup_ui();
 
@@ -30,6 +32,7 @@ private slots:
 
     void chk_enable_als_power_state_changed(int state);
     void spin_als_lux_threshold_value_changed(int val);
+    void update_als_data();
 };
 
 #endif   /* ----- #ifndef MAIN_WINDOW_INC  ----- */

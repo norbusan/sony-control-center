@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'main_window.hpp'
 **
-** Created: Thu Mar 10 02:18:28 2011
+** Created: Thu Mar 10 12:43:27 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,6 +37,7 @@ static const uint qt_meta_data_MainWindow[] = {
      147,   61,   11,   11, 0x08,
      186,   61,   11,   11, 0x08,
      226,  104,   11,   11, 0x08,
+     268,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -49,6 +50,7 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "chk_enable_touchpad_state_changed(int)\0"
     "chk_enable_als_power_state_changed(int)\0"
     "spin_als_lux_threshold_value_changed(int)\0"
+    "update_als_data()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -86,9 +88,10 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: chk_enable_touchpad_state_changed((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 4: chk_enable_als_power_state_changed((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 5: spin_als_lux_threshold_value_changed((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: update_als_data(); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }
