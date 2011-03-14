@@ -65,8 +65,6 @@ void MainWindow::setup_ui() {
     // ALS
     int const als_power = read_int_from_file(SONY_ALS_POWER);
     ui->chk_enable_als_power->setChecked(als_power);
-    ui->spin_als_lux_threshold->setEnabled(als_power);
-    ui->spin_als_lux_threshold->setValue(read_int_from_file(SONY_ALS_LUX_THRESHOLD));
     std::string buf;
     buf.reserve(256);
     ui->lbl_als_model_val->setText(read_str_from_file(SONY_ALS_MODEL, const_cast<char*>(buf.c_str()), buf.size()));
@@ -80,7 +78,6 @@ void MainWindow::setup_ui() {
     connect(ui->chk_enable_touchpad, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_touchpad_state_changed(int)));
 
     connect(ui->chk_enable_als_power, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_als_power_state_changed(int)));
-    connect(ui->spin_als_lux_threshold, SIGNAL(valueChanged(int)), this, SLOT(spin_als_lux_threshold_value_changed(int)));
     connect(&_als_timer, SIGNAL(timeout()), this, SLOT(update_als_data()));
     _als_timer.start(500);
 }
@@ -120,17 +117,11 @@ void MainWindow::hslider_kbd_timeout_value_changed(int val) {
 }
 
 void MainWindow::chk_enable_als_power_state_changed(int state) {
-    ui->spin_als_lux_threshold->setEnabled(state);
     write_int_to_file(SONY_ALS_POWER, state == 2 ? 1 : 0);
-}
-
-void MainWindow::spin_als_lux_threshold_value_changed(int val) {
-    write_int_to_file(SONY_ALS_LUX_THRESHOLD, val);
 }
 
 void MainWindow::update_als_data() {
     std::string buf;
     buf.reserve(64);
     ui->lbl_als_lux_val->setText(read_str_from_file(SONY_ALS_LUX, const_cast<char*>(buf.c_str()), buf.size()));
-    ui->lbl_als_backlight_val->setText(read_str_from_file(SONY_ALS_BL, const_cast<char*>(buf.c_str()), buf.size()));
 }

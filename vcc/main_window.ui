@@ -151,66 +151,38 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="lbl_als_lux_threshold">
-         <property name="text">
-          <string>Luminance Threshold: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QSpinBox" name="spin_als_lux_threshold">
-         <property name="maximum">
-          <number>999</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="2">
+       <item row="1" column="0" colspan="2">
         <widget class="Line" name="line">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="lbl_als_model">
          <property name="text">
           <string>Model:</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="lbl_als_lux">
-         <property name="text">
-          <string>Luminance:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="lbl_als_backlight">
-         <property name="text">
-          <string>Backlight:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
+       <item row="2" column="1">
         <widget class="QLabel" name="lbl_als_model_val">
          <property name="text">
           <string>ALS Model</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QLabel" name="lbl_als_lux_val">
+       <item row="3" column="0">
+        <widget class="QLabel" name="lbl_als_lux">
          <property name="text">
-          <string>ALS Luminance</string>
+          <string>Luminance:</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="lbl_als_backlight_val">
+       <item row="3" column="1">
+        <widget class="QLabel" name="lbl_als_lux_val">
          <property name="text">
-          <string>ALS Backlight</string>
+          <string>ALS Luminance</string>
          </property>
         </widget>
        </item>

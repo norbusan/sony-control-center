@@ -52,7 +52,6 @@ private slots:
     void chk_enable_touchpad_state_changed(int state);
 
     void chk_enable_als_power_state_changed(int state);
-    void spin_als_lux_threshold_value_changed(int val);
     void update_als_data();
 };
 

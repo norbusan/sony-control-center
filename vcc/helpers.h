@@ -32,9 +32,7 @@
 static char const*const SONY_BATTERY_CHARGE_LIMITER = "/sys/devices/platform/sony-laptop/battery_charge_limiter";
 static char const*const SONY_ALS_MODEL = "/sys/devices/platform/sony-laptop/als_model";
 static char const*const SONY_ALS_POWER = "/sys/devices/platform/sony-laptop/als_power";
-static char const*const SONY_ALS_BL = "/sys/devices/platform/sony-laptop/als_backlight";
 static char const*const SONY_ALS_LUX = "/sys/devices/platform/sony-laptop/als_lux";
-static char const*const SONY_ALS_LUX_THRESHOLD = "/sys/devices/platform/sony-laptop/als_lux_threshold";
 static char const*const SONY_KBD_BL = "/sys/devices/platform/sony-laptop/kbd_backlight";
 static char const*const SONY_KBD_BL_TIMEOUT = "/sys/devices/platform/sony-laptop/kbd_backlight_timeout";
 static char const*const SONY_TOUCHPAD = "/sys/devices/platform/sony-laptop/touchpad";
