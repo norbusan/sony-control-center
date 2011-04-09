@@ -44,6 +44,7 @@ private:
     void setup_ui();
 
 private slots:
+    void chk_battery_fast_charge_changed(int state);
     void btngrp_battery_protection_button_clicked(int id);
 
     void chk_enable_kbd_bl_state_changed(int state);
@@ -53,6 +54,11 @@ private slots:
 
     void chk_enable_als_power_state_changed(int state);
     void update_als_data();
+
+    void chk_lid_s3_changed(int state);
+    void chk_lid_s4_changed(int state);
+
+    void chk_enable_optdev_state_changed(int state);
 };
 
 #endif   /* ----- #ifndef MAIN_WINDOW_INC  ----- */

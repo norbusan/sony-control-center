@@ -29,36 +29,47 @@
       <attribute name="title">
        <string>Battery Charge</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_2">
-       <item row="0" column="0">
-        <widget class="QRadioButton" name="rad_battery_max_protection">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QCheckBox" name="chk_battery_fast_charge">
          <property name="text">
-          <string>Maximum Battery Protection (50% charge)</string>
+          <string>Enable Battery Fast Charge</string>
          </property>
-         <attribute name="buttonGroup">
-          <string>btngrp_battery_protection</string>
-         </attribute>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QRadioButton" name="rad_battery_medium_protection">
-         <property name="text">
-          <string>Medium Battery Protection (80% charge)</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string>btngrp_battery_protection</string>
-         </attribute>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QRadioButton" name="rad_battery_no_protection">
-         <property name="text">
-          <string>No Battery Protection (100% charge)</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string>btngrp_battery_protection</string>
-         </attribute>
-        </widget>
+       <item>
+        <layout class="QFormLayout" name="formLayout_2">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="rad_battery_max_protection">
+           <property name="text">
+            <string>Maximum Battery Protection (50% charge)</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string>btngrp_battery_protection</string>
+           </attribute>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="rad_battery_medium_protection">
+           <property name="text">
+            <string>Medium Battery Protection (80% charge)</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string>btngrp_battery_protection</string>
+           </attribute>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QRadioButton" name="rad_battery_no_protection">
+           <property name="text">
+            <string>No Battery Protection (100% charge)</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string>btngrp_battery_protection</string>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -183,6 +194,41 @@
         <widget class="QLabel" name="lbl_als_lux_val">
          <property name="text">
           <string>ALS Luminance</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_lid">
+      <attribute name="title">
+       <string>Lid Resume Control</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_6">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="chk_lid_s3">
+         <property name="text">
+          <string>Resume from suspend on lid open</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="chk_lid_s4">
+         <property name="text">
+          <string>Resume from hibernate on lid open</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_touchpad">
+      <attribute name="title">
+       <string>Optical Device</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_5">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="chk_enable_optdev">
+         <property name="text">
+          <string>Enable Optical Device</string>
          </property>
         </widget>
        </item>

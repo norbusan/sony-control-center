@@ -21,6 +21,12 @@
 
 #include "helpers.h"
 
+int check_file(char const* path) {
+    struct stat st;
+
+    return !stat(path, &st);
+}
+
 FILE* open_file(char const* path, char const* mode) {
     FILE* const fd = fopen(path, mode);
     if (!fd) {

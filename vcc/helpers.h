@@ -28,14 +28,20 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/stat.h>
 
 static char const*const SONY_BATTERY_CHARGE_LIMITER = "/sys/devices/platform/sony-laptop/battery_charge_limiter";
+static char const*const SONY_BATTERY_HIGHSPEED_CHRG = "/sys/devices/platform/sony-laptop/battery_highspeed_charging";
 static char const*const SONY_ALS_MODEL = "/sys/devices/platform/sony-laptop/als_model";
 static char const*const SONY_ALS_POWER = "/sys/devices/platform/sony-laptop/als_power";
 static char const*const SONY_ALS_LUX = "/sys/devices/platform/sony-laptop/als_lux";
 static char const*const SONY_KBD_BL = "/sys/devices/platform/sony-laptop/kbd_backlight";
 static char const*const SONY_KBD_BL_TIMEOUT = "/sys/devices/platform/sony-laptop/kbd_backlight_timeout";
 static char const*const SONY_TOUCHPAD = "/sys/devices/platform/sony-laptop/touchpad";
+static char const*const SONY_LID_CTRL = "/sys/devices/platform/sony-laptop/lid_resume_control";
+static char const*const SONY_OPTICAL_DEV = "/sys/devices/platform/sony-laptop/optical_device";
+
+int check_file(char const* path);
 
 FILE* open_file(char const* path, char const* mode);
 
