@@ -60,6 +60,9 @@ void MainWindow::setup_ui() {
         int const kbd_backlight_timeout = read_int_from_file(SONY_KBD_BL_TIMEOUT);
         ui->hslider_kbd_timeout->setValue(kbd_backlight_timeout);
         hslider_kbd_timeout_value_changed(kbd_backlight_timeout);
+    } else {
+        ui->chk_enable_kbd_bl->setEnabled(0);
+        ui->hslider_kbd_timeout->setEnabled(0);
     }
 
     // Touchpad
@@ -80,6 +83,28 @@ void MainWindow::setup_ui() {
     // Optical device
     ui->chk_enable_optdev->setChecked(read_int_from_file(SONY_OPTICAL_DEV));
 
+    // Thermal Control
+    ui->btngrp_thermal->setId(ui->rad_thermal_performance, 2);
+    ui->btngrp_thermal->setId(ui->rad_thermal_silent, 1);
+    ui->btngrp_thermal->setId(ui->rad_thermal_balanced, 0);
+    switch(read_int_from_file(SONY_THERMAL)) {
+        case 2:
+            ui->rad_thermal_performance->setChecked(true);
+            break;
+        case 1:
+            write_int_to_file(SONY_THERMAL, 2);
+            if (read_int_from_file(SONY_THERMAL) < 2)
+                ui->rad_thermal_performance->setChecked(true);
+            else {
+                ui->rad_thermal_silent->setChecked(true);
+                write_int_to_file(SONY_THERMAL, 1);
+            }
+            break;
+        case 0:
+            ui->rad_thermal_balanced->setChecked(true);
+            break;
+    }
+
     // Connect everything
     connect(ui->chk_battery_fast_charge, SIGNAL(stateChanged(int)), this, SLOT(chk_battery_fast_charge_changed(int)));
     connect(ui->btngrp_battery_protection, SIGNAL(buttonClicked(int)), this, SLOT(btngrp_battery_protection_button_clicked(int)));
@@ -92,7 +117,13 @@ void MainWindow::setup_ui() {
     connect(ui->chk_enable_als_power, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_als_power_state_changed(int)));
     connect(&_als_timer, SIGNAL(timeout()), this, SLOT(update_als_data()));
     _als_timer.start(500);
+
+    connect(ui->chk_lid_s3, SIGNAL(stateChanged(int)), this, SLOT(chk_lid_s3_changed(int)));
+    connect(ui->chk_lid_s4, SIGNAL(stateChanged(int)), this, SLOT(chk_lid_s4_changed(int)));
+
     connect(ui->chk_enable_optdev, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_optdev_state_changed(int)));
+
+    connect(ui->btngrp_thermal, SIGNAL(buttonClicked(int)), this, SLOT(btngrp_thermal_button_clicked(int)));
 }
 
 void MainWindow::chk_battery_fast_charge_changed(int state) {
@@ -157,4 +188,14 @@ void MainWindow::chk_lid_s4_changed(int state) {
 
 void MainWindow::chk_enable_optdev_state_changed(int state) {
     write_int_to_file(SONY_OPTICAL_DEV, state == 2 ? 1 : 0);
+}
+
+void MainWindow::btngrp_thermal_button_clicked(int id) {
+    if (id > 1) {
+        write_int_to_file(SONY_THERMAL, id);
+        if (read_int_from_file(SONY_THERMAL) == id)
+            return;
+        id = 1;
+    }
+    write_int_to_file(SONY_THERMAL, id);
 }

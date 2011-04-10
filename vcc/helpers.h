@@ -40,6 +40,7 @@ static char const*const SONY_KBD_BL_TIMEOUT = "/sys/devices/platform/sony-laptop
 static char const*const SONY_TOUCHPAD = "/sys/devices/platform/sony-laptop/touchpad";
 static char const*const SONY_LID_CTRL = "/sys/devices/platform/sony-laptop/lid_resume_control";
 static char const*const SONY_OPTICAL_DEV = "/sys/devices/platform/sony-laptop/optical_device";
+static char const*const SONY_THERMAL = "/sys/devices/platform/sony-laptop/thermal_control";
 
 int check_file(char const* path);
 

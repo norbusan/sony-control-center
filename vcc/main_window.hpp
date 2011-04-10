@@ -59,6 +59,8 @@ private slots:
     void chk_lid_s4_changed(int state);
 
     void chk_enable_optdev_state_changed(int state);
+
+    void btngrp_thermal_button_clicked(int id);
 };
 
 #endif   /* ----- #ifndef MAIN_WINDOW_INC  ----- */

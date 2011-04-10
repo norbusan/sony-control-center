@@ -220,7 +220,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_touchpad">
+     <widget class="QWidget" name="tab_optdev">
       <attribute name="title">
        <string>Optical Device</string>
       </attribute>
@@ -234,6 +234,43 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_thermal">
+      <attribute name="title">
+       <string>Thermal Profile</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_7">
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="rad_thermal_balanced">
+         <property name="text">
+          <string>Balanced Profile</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string>btngrp_thermal</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QRadioButton" name="rad_thermal_silent">
+         <property name="text">
+          <string>Silent Profile</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string>btngrp_thermal</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QRadioButton" name="rad_thermal_performance">
+         <property name="text">
+          <string>Performance Profile</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string>btngrp_thermal</string>
+         </attribute>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -242,5 +279,6 @@
  <connections/>
  <buttongroups>
   <buttongroup name="btngrp_battery_protection"/>
+  <buttongroup name="btngrp_thermal"/>
  </buttongroups>
 </ui>
