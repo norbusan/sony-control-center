@@ -71,9 +71,6 @@ void MainWindow::setup_ui() {
     // ALS
     int const als_power = read_int_from_file(SONY_ALS_POWER);
     ui->chk_enable_als_power->setChecked(als_power);
-    std::string buf;
-    buf.reserve(256);
-    ui->lbl_als_model_val->setText(read_str_from_file(SONY_ALS_MODEL, const_cast<char*>(buf.c_str()), buf.size()));
 
     // Lid
     int const lid = read_int_from_file(SONY_LID_CTRL);
@@ -84,21 +81,21 @@ void MainWindow::setup_ui() {
     ui->chk_enable_optdev->setChecked(read_int_from_file(SONY_OPTICAL_DEV));
 
     // Thermal Control
-    ui->btngrp_thermal->setId(ui->rad_thermal_performance, 2);
-    ui->btngrp_thermal->setId(ui->rad_thermal_silent, 1);
+    int profiles = read_int_from_file(SONY_THERMAL_NUM);
+
+    if (profiles > 2)
+        ui->btngrp_thermal->setId(ui->rad_thermal_silent, 2);
+    else
+        ui->rad_thermal_silent->setEnabled(0);
+
+    ui->btngrp_thermal->setId(ui->rad_thermal_performance, 1);
     ui->btngrp_thermal->setId(ui->rad_thermal_balanced, 0);
     switch(read_int_from_file(SONY_THERMAL)) {
         case 2:
-            ui->rad_thermal_performance->setChecked(true);
+            ui->rad_thermal_silent->setChecked(true);
             break;
         case 1:
-            write_int_to_file(SONY_THERMAL, 2);
-            if (read_int_from_file(SONY_THERMAL) < 2)
-                ui->rad_thermal_performance->setChecked(true);
-            else {
-                ui->rad_thermal_silent->setChecked(true);
-                write_int_to_file(SONY_THERMAL, 1);
-            }
+            ui->rad_thermal_performance->setChecked(true);
             break;
         case 0:
             ui->rad_thermal_balanced->setChecked(true);
@@ -172,6 +169,7 @@ void MainWindow::update_als_data() {
     std::string buf;
     buf.reserve(64);
     ui->lbl_als_lux_val->setText(read_str_from_file(SONY_ALS_LUX, const_cast<char*>(buf.c_str()), buf.size()));
+    ui->lbl_als_kelvin_val->setText(read_str_from_file(SONY_ALS_KELVIN, const_cast<char*>(buf.c_str()), buf.size()));
 }
 
 void MainWindow::chk_lid_s3_changed(int state) {
@@ -191,11 +189,8 @@ void MainWindow::chk_enable_optdev_state_changed(int state) {
 }
 
 void MainWindow::btngrp_thermal_button_clicked(int id) {
-    if (id > 1) {
+    int profiles = read_int_from_file(SONY_THERMAL_NUM);
+
+    if (id < profiles)
         write_int_to_file(SONY_THERMAL, id);
-        if (read_int_from_file(SONY_THERMAL) == id)
-            return;
-        id = 1;
-    }
-    write_int_to_file(SONY_THERMAL, id);
 }
