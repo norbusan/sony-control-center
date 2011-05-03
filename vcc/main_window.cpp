@@ -36,21 +36,31 @@ MainWindow::~MainWindow() {
 
 void MainWindow::setup_ui() {
     // Battery Charge
-    ui->chk_battery_fast_charge->setChecked(read_int_from_file(SONY_BATTERY_HIGHSPEED_CHRG));
-    ui->btngrp_battery_protection->setId(ui->rad_battery_max_protection, 2);
-    ui->btngrp_battery_protection->setId(ui->rad_battery_medium_protection, 1);
-    ui->btngrp_battery_protection->setId(ui->rad_battery_no_protection, 0);
-    switch(read_int_from_file(SONY_BATTERY_CHARGE_LIMITER)) {
-        case 2:
-            ui->rad_battery_max_protection->setChecked(true);
-            break;
-        case 1:
-            ui->rad_battery_medium_protection->setChecked(true);
-            break;
-        case 0:
-            ui->rad_battery_no_protection->setChecked(true);
-            break;
+    if (check_file(SONY_BATTERY_HIGHSPEED_CHRG)) {
+        ui->chk_battery_fast_charge->setChecked(read_int_from_file(SONY_BATTERY_HIGHSPEED_CHRG));
+
+        connect(ui->chk_battery_fast_charge, SIGNAL(stateChanged(int)), this, SLOT(chk_battery_fast_charge_changed(int)));
     }
+    else ui->chk_battery_fast_charge->setEnabled(false);
+    if (check_file(SONY_BATTERY_CHARGE_LIMITER)) {
+        ui->btngrp_battery_protection->setId(ui->rad_battery_max_protection, 2);
+        ui->btngrp_battery_protection->setId(ui->rad_battery_medium_protection, 1);
+        ui->btngrp_battery_protection->setId(ui->rad_battery_no_protection, 0);
+        switch(read_int_from_file(SONY_BATTERY_CHARGE_LIMITER)) {
+            case 2:
+                ui->rad_battery_max_protection->setChecked(true);
+                break;
+            case 1:
+                ui->rad_battery_medium_protection->setChecked(true);
+                break;
+            case 0:
+                ui->rad_battery_no_protection->setChecked(true);
+                break;
+        }
+
+        connect(ui->btngrp_battery_protection, SIGNAL(buttonClicked(int)), this, SLOT(btngrp_battery_protection_button_clicked(int)));
+    }
+    else ui->frm_battery_protection->setEnabled(false);
 
     // Keyboard Backlight
     if (check_file(SONY_KBD_BL)) {
@@ -60,87 +70,89 @@ void MainWindow::setup_ui() {
         int const kbd_backlight_timeout = read_int_from_file(SONY_KBD_BL_TIMEOUT);
         ui->hslider_kbd_timeout->setValue(kbd_backlight_timeout);
         hslider_kbd_timeout_value_changed(kbd_backlight_timeout);
-    } else {
-        ui->chk_enable_kbd_bl->setEnabled(0);
-        ui->hslider_kbd_timeout->setEnabled(0);
+
+        connect(ui->chk_enable_kbd_bl, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_kbd_bl_state_changed(int)));
+        connect(ui->hslider_kbd_timeout, SIGNAL(valueChanged(int)), this, SLOT(hslider_kbd_timeout_value_changed(int)));
     }
+    else ui->frm_kbd_bl->setEnabled(false);
 
     // Touchpad
-    ui->chk_enable_touchpad->setChecked(read_int_from_file(SONY_TOUCHPAD));
+    if (check_file(SONY_TOUCHPAD)) {
+        ui->chk_enable_touchpad->setChecked(read_int_from_file(SONY_TOUCHPAD));
+
+        connect(ui->chk_enable_touchpad, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_touchpad_state_changed(int)));
+    }
+    else ui->chk_enable_touchpad->setEnabled(false);
 
     // ALS
-    int const als_power = read_int_from_file(SONY_ALS_POWER);
-    ui->chk_enable_als_power->setChecked(als_power);
+    if (check_file(SONY_ALS_POWER)) {
+        int const als_power = read_int_from_file(SONY_ALS_POWER);
+        ui->chk_enable_als_power->setChecked(als_power);
+
+        connect(ui->chk_enable_als_power, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_als_power_state_changed(int)));
+        connect(&_als_timer, SIGNAL(timeout()), this, SLOT(update_als_data()));
+        _als_timer.start(500);
+    }
+    else ui->frm_als->setEnabled(false);
 
     // Lid
-    int const lid = read_int_from_file(SONY_LID_CTRL);
-    ui->chk_lid_s3->setChecked(lid & 2);
-    ui->chk_lid_s4->setChecked(lid & 1);
+    if (check_file(SONY_LID_CTRL)) {
+        int const lid = read_int_from_file(SONY_LID_CTRL);
+        ui->chk_lid_s3->setChecked(lid & 2);
+        ui->chk_lid_s4->setChecked(lid & 1);
+
+        connect(ui->chk_lid_s3, SIGNAL(stateChanged(int)), this, SLOT(chk_lid_s3_changed(int)));
+        connect(ui->chk_lid_s4, SIGNAL(stateChanged(int)), this, SLOT(chk_lid_s4_changed(int)));
+    }
+    else ui->frm_lid->setEnabled(false);
 
     // Optical device
-    ui->chk_enable_optdev->setChecked(read_int_from_file(SONY_OPTICAL_DEV));
+    if (check_file(SONY_OPTICAL_DEV)) {
+        ui->chk_enable_optdev->setChecked(read_int_from_file(SONY_OPTICAL_DEV));
+
+        connect(ui->chk_enable_optdev, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_optdev_state_changed(int)));
+    }
+    else ui->chk_enable_optdev->setEnabled(false);
 
     // Thermal Control
-    int profiles = read_int_from_file(SONY_THERMAL_NUM);
+    if (check_file(SONY_THERMAL_NUM)) {
+        int const profiles = read_int_from_file(SONY_THERMAL_NUM);
 
-    if (profiles > 2)
-        ui->btngrp_thermal->setId(ui->rad_thermal_silent, 2);
-    else
-        ui->rad_thermal_silent->setEnabled(0);
+        if (profiles > 2)
+            ui->btngrp_thermal->setId(ui->rad_thermal_silent, 2);
+        else
+            ui->rad_thermal_silent->setEnabled(0);
 
-    ui->btngrp_thermal->setId(ui->rad_thermal_performance, 1);
-    ui->btngrp_thermal->setId(ui->rad_thermal_balanced, 0);
-    switch(read_int_from_file(SONY_THERMAL)) {
-        case 2:
-            ui->rad_thermal_silent->setChecked(true);
-            break;
-        case 1:
-            ui->rad_thermal_performance->setChecked(true);
-            break;
-        case 0:
-            ui->rad_thermal_balanced->setChecked(true);
-            break;
+        ui->btngrp_thermal->setId(ui->rad_thermal_performance, 1);
+        ui->btngrp_thermal->setId(ui->rad_thermal_balanced, 0);
+        switch(read_int_from_file(SONY_THERMAL)) {
+            case 2:
+                ui->rad_thermal_silent->setChecked(true);
+                break;
+            case 1:
+                ui->rad_thermal_performance->setChecked(true);
+                break;
+            case 0:
+                ui->rad_thermal_balanced->setChecked(true);
+                break;
+        }
+
+        connect(ui->btngrp_thermal, SIGNAL(buttonClicked(int)), this, SLOT(btngrp_thermal_button_clicked(int)));
     }
-
-    // Connect everything
-    connect(ui->chk_battery_fast_charge, SIGNAL(stateChanged(int)), this, SLOT(chk_battery_fast_charge_changed(int)));
-    connect(ui->btngrp_battery_protection, SIGNAL(buttonClicked(int)), this, SLOT(btngrp_battery_protection_button_clicked(int)));
-
-    connect(ui->chk_enable_kbd_bl, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_kbd_bl_state_changed(int)));
-    connect(ui->hslider_kbd_timeout, SIGNAL(valueChanged(int)), this, SLOT(hslider_kbd_timeout_value_changed(int)));
-
-    connect(ui->chk_enable_touchpad, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_touchpad_state_changed(int)));
-
-    connect(ui->chk_enable_als_power, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_als_power_state_changed(int)));
-    connect(&_als_timer, SIGNAL(timeout()), this, SLOT(update_als_data()));
-    _als_timer.start(500);
-
-    connect(ui->chk_lid_s3, SIGNAL(stateChanged(int)), this, SLOT(chk_lid_s3_changed(int)));
-    connect(ui->chk_lid_s4, SIGNAL(stateChanged(int)), this, SLOT(chk_lid_s4_changed(int)));
-
-    connect(ui->chk_enable_optdev, SIGNAL(stateChanged(int)), this, SLOT(chk_enable_optdev_state_changed(int)));
-
-    connect(ui->btngrp_thermal, SIGNAL(buttonClicked(int)), this, SLOT(btngrp_thermal_button_clicked(int)));
+    else ui->frm_thermal->setEnabled(false);
 }
 
 void MainWindow::chk_battery_fast_charge_changed(int state) {
     write_int_to_file(SONY_BATTERY_HIGHSPEED_CHRG, state == 2 ? 1 : 0);
 }
-
 void MainWindow::btngrp_battery_protection_button_clicked(int id) {
     write_int_to_file(SONY_BATTERY_CHARGE_LIMITER, id);
 }
-
 
 void MainWindow::chk_enable_kbd_bl_state_changed(int state) {
     ui->hslider_kbd_timeout->setEnabled(state);
     write_int_to_file(SONY_KBD_BL, state == 2 ? 1 : 0);
 }
-
-void MainWindow::chk_enable_touchpad_state_changed(int state) {
-    write_int_to_file(SONY_TOUCHPAD, state == 2 ? 1 : 0);
-}
-
 void MainWindow::hslider_kbd_timeout_value_changed(int val) {
     char const* txt = NULL;
     switch (val) {
@@ -161,15 +173,17 @@ void MainWindow::hslider_kbd_timeout_value_changed(int val) {
     write_int_to_file(SONY_KBD_BL_TIMEOUT, val);
 }
 
+void MainWindow::chk_enable_touchpad_state_changed(int state) {
+    write_int_to_file(SONY_TOUCHPAD, state == 2 ? 1 : 0);
+}
+
 void MainWindow::chk_enable_als_power_state_changed(int state) {
     write_int_to_file(SONY_ALS_POWER, state == 2 ? 1 : 0);
 }
-
 void MainWindow::update_als_data() {
-    std::string buf;
-    buf.reserve(64);
-    ui->lbl_als_lux_val->setText(read_str_from_file(SONY_ALS_LUX, const_cast<char*>(buf.c_str()), buf.size()));
-    ui->lbl_als_kelvin_val->setText(read_str_from_file(SONY_ALS_KELVIN, const_cast<char*>(buf.c_str()), buf.size()));
+    char buf[64];
+    ui->lbl_als_lux_val->setText(read_str_from_file(SONY_ALS_LUX, buf, sizeof(buf)/sizeof(buf[0])));
+    ui->lbl_als_kelvin_val->setText(read_str_from_file(SONY_ALS_KELVIN, buf, sizeof(buf)/sizeof(buf[0])));
 }
 
 void MainWindow::chk_lid_s3_changed(int state) {
@@ -177,7 +191,6 @@ void MainWindow::chk_lid_s3_changed(int state) {
     
     write_int_to_file(SONY_LID_CTRL, state == 2 ? (lid | 2) : (lid & ~2));
 }
-
 void MainWindow::chk_lid_s4_changed(int state) {
     int const lid = read_int_from_file(SONY_LID_CTRL);
     
