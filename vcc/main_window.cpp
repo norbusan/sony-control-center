@@ -26,8 +26,47 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowIcon( QIcon::fromTheme( "computer-laptop" ) );
+
+    QPalette plt = palette();
+        plt.setColor( QPalette::WindowText , QColor(255,255,255) );
+
+    QFont fnt = font();
+        fnt.setBold( true );
+        fnt.setItalic( true );
+        fnt.setPixelSize( 13 );
+
+    icon = new SPictureWidget();
+        icon->setFixedSize( 48 , 48 );
+
+    item_label = new QLabel();
+        item_label->setPalette( plt );
+        item_label->setFont( fnt );
+
+    picture = new SPictureWidget();
+        picture->drawFile( ":/pics/vcc/vaio.png" );
+        picture->setFixedHeight( 90 );
+
+    layout = new QHBoxLayout( picture );
+        layout->addWidget( icon );
+        layout->addWidget( item_label );
+        layout->addStretch();
+
+    ui->verticalLayout->insertWidget( 0 , picture );
+
+    ui->listWidget->setIconSize( QSize(22,22) );
+    ui->listWidget->item(0)->setIcon( QIcon::fromTheme( "battery" ) );
+    ui->listWidget->item(1)->setIcon( QIcon::fromTheme( "input-keyboard" ) );
+    ui->listWidget->item(2)->setIcon( QIcon::fromTheme( "input-mouse" ) );
+    ui->listWidget->item(3)->setIcon( QIcon::fromTheme( "video-projector" ) );
+    ui->listWidget->item(4)->setIcon( QIcon::fromTheme( "system-suspend-hibernate" ) );
+    ui->listWidget->item(5)->setIcon( QIcon::fromTheme( "drive-optical" ) );
+    ui->listWidget->item(6)->setIcon( QIcon::fromTheme( "cpu" ) );
 
     setup_ui();
+
+    connect( ui->listWidget , SIGNAL(currentRowChanged(int)) , SLOT(list_index_changed(int)) );
+    ui->listWidget->setCurrentRow( 0 );
 }
 
 MainWindow::~MainWindow() {
@@ -206,4 +245,14 @@ void MainWindow::btngrp_thermal_button_clicked(int id) {
 
     if (id < profiles)
         write_int_to_file(SONY_THERMAL, id);
+}
+
+void MainWindow::list_index_changed( int index )
+{
+    QListWidgetItem *item = ui->listWidget->item(index);
+
+    ui->stackedWidget->setCurrentIndex( index );
+
+    item_label->setText( item->text() );
+    icon->drawIcon( item->icon() , QSize(48,48) );
 }

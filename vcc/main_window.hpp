@@ -26,6 +26,8 @@
 #include <string>
 
 #include "ui_main_window.h"
+#include "spicturewidget.h"
+
 extern "C" {
 #include "helpers.h"
 }
@@ -61,6 +63,14 @@ private slots:
     void chk_enable_optdev_state_changed(int state);
 
     void btngrp_thermal_button_clicked(int id);
+
+    void list_index_changed( int index );
+
+private:
+    SPictureWidget *picture;
+    SPictureWidget *icon;
+    QLabel         *item_label;
+    QHBoxLayout    *layout;
 };
 
 #endif   /* ----- #ifndef MAIN_WINDOW_INC  ----- */

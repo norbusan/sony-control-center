@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/pics">
+        <file>vcc/vaio.png</file>
+    </qresource>
+</RCC>
