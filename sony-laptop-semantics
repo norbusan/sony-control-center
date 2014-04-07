@@ -1,0 +1,42 @@
+
+kbd_backlight:
+	-1	no change
+	0	off
+	1	on
+kbd_backlight_timeout
+	1	10-13 sec?
+	2	30-35 sec
+	3	60??
+	0	always on
+battery_care_limiter  reading
+	0	off (== to 100%??)
+	50	charge to 50%
+	80	charge to 80%
+	100	charge to 100%
+   writing
+   	0	-> 0
+	1-50	-> 50
+	51-80	-> 80
+	81-100	-> 100
+battery_care_health
+	???
+fan_forced
+	???
+fanspeed
+	???
+lowbatt_hibernate
+	???
+panel_id
+	???
+smart_connect
+	???
+thermal_control
+	read/write current profile *name*
+thermal_profiles
+	lists all available profiles, list of strings
+touchpad
+	0/1 off/on
+usb_charge - charge while suspended
+	0
+	1
+		somehow does not work
