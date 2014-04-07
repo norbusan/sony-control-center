@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>VAIO Control Center</string>
+   <string>Sony Control Center</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>

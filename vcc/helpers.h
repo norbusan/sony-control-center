@@ -1,7 +1,8 @@
 /*
- * Sony VAIO Control Center for Linux
+ * Sony Control Center for Linux
  *
  * Copyright (C) 2011 Tu Vuong <vanhtu1987@gmail.com>
+ * Copyright (C) 2014 Norbert Preining <norbert@preining.info>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
