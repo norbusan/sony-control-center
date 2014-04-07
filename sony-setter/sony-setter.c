@@ -1,16 +1,35 @@
 /*
+ * Sony Setting Utility for Linux
+ *
+ * Copyright (C) 2014 Norbert Preining <norbert@preining.info>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ */
 
+/*
 
 this small cmdline utility is used to set various parameters
 of the sony-laptop module. It allows to be set suid, allowing 
 normal users to change the laptop settings.
+This program should normally used only from a gui.
 
 sony-setter battery-care off
 sony-setter battery-care on	no change to value
 sony-setter battery-care limit [50,80,100]
 
-sony-setter thermal-profile list	lists all
-sony-setter thermal-profile current	lists current
 sony-setter thermal-profile <name>	sets <name> if available
 
 sony-setter touchpad on|off
@@ -65,6 +84,15 @@ void write_sys_int(char const* path, int val) {
     fclose(fd);
 }
 
+void write_sys_str(char const* path, char const* val) {
+    FILE* const fd = open_file(path, "w");
+    if (fprintf(fd, "%s", val) < 0) {
+        fprintf(stderr, "write_str_to_file (%s): fprintf failed - %s\n",
+                path, strerror(errno));
+        exit(1);
+    }
+    fclose(fd);
+}
 
 static void usage(void)
 {
@@ -72,11 +100,11 @@ static void usage(void)
         fprintf(stderr, "Options:\n");
         fprintf(stderr, "\t--version\tshow version (%s)\n", sony_setter_version);
         fprintf(stderr, "Commands:\n");
-        fprintf(stderr, "\tbattery-care <opts>\n");
+        fprintf(stderr, "\tbattery-care [off|50|80|100]\n");
         fprintf(stderr, "\ttouchpad [on|off]\n");
-        fprintf(stderr, "\tthermal-profile <opts>\n");
+        fprintf(stderr, "\tthermal-profile <profile-name>\n");
         fprintf(stderr, "\tusb-charge [on|off]\n");
-        fprintf(stderr, "\tkbd-backlight <opts>\n");
+        fprintf(stderr, "\tkbd-backlight [on|off|0|1|2|3]\n");
 }
 
 static void version(void)
@@ -107,7 +135,11 @@ static void do_battery_care(int argc, char **argv) {
         }
 }
 static void do_thermal_profile(int argc, char **argv) {
-        fprintf(stderr, "not implemented yet\n");
+        if (argc != 1) {
+                usage();
+                exit(1);
+        }
+	write_sys_str(SONY_THERMAL, *argv);
         return;
 }
 static void do_on_off(char const* path, int argc, char **argv) {
@@ -135,7 +167,32 @@ static void do_usb_charge(int argc, char **argv) {
         return;
 }
 static void do_kbd_backlight(int argc, char **argv) {
-        fprintf(stderr, "not implemented yet\n");
+        if (argc != 1) {
+                usage();
+                exit(1);
+        }
+        if (strcmp(*argv, "on") == 0) {
+                write_sys_int(SONY_KBD_BL, 1);
+                return;
+        } else if (strcmp(*argv, "off") == 0) {
+                write_sys_int(SONY_KBD_BL, 0);
+                return;
+        } else if (strcmp(*argv, "0") == 0) {
+                write_sys_int(SONY_KBD_BL_TIMEOUT, 0);
+                return;
+        } else if (strcmp(*argv, "1") == 0) {
+                write_sys_int(SONY_KBD_BL_TIMEOUT, 1);
+                return;
+        } else if (strcmp(*argv, "2") == 0) {
+                write_sys_int(SONY_KBD_BL_TIMEOUT, 2);
+                return;
+        } else if (strcmp(*argv, "3") == 0) {
+                write_sys_int(SONY_KBD_BL_TIMEOUT, 3);
+                return;
+	} else {
+                usage();
+                exit(1);
+	}
         return;
 }
 
