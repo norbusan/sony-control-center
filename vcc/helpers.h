@@ -51,6 +51,7 @@ int read_int_from_file(char const* path);
 void write_int_to_file(char const* path, int val);
 
 char const* read_str_from_file(char const* path, char* buf, size_t buf_size);
+void write_str_to_file(char const* path, char const* val);
 
 #endif   /* ----- #ifndef HELPERS_INC  ----- */
 

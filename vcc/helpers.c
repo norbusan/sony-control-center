@@ -42,8 +42,8 @@ int read_int_from_file(char const* path) {
     FILE* const fd = open_file(path, "r");
     int result = -1;
     if (fscanf(fd, "%i", &result) != 1) {
-        fprintf(stderr, "read_int_from_file: fscanf() failed - %s\n",
-                strerror(errno));
+        fprintf(stderr, "read_int_from_file (%s): fscanf() failed - %s\n",
+                path, strerror(errno));
         exit(EXIT_FAILURE);
     }
     fclose(fd);
@@ -53,8 +53,8 @@ int read_int_from_file(char const* path) {
 void write_int_to_file(char const* path, int val) {
     FILE* const fd = open_file(path, "w");
     if (fprintf(fd, "%i", val) < 0) {
-        fprintf(stderr, "write_int_to_file: fprintf failed - %s\n",
-                strerror(errno));
+        fprintf(stderr, "write_int_to_file (%s): fprintf failed - %s\n",
+                path, strerror(errno));
         exit(EXIT_FAILURE);
     }
     fclose(fd);
@@ -63,11 +63,22 @@ void write_int_to_file(char const* path, int val) {
 char const* read_str_from_file(char const* path, char* buf, size_t buf_size) {
     FILE* const fd = open_file(path, "r");
     if (getline(&buf, &buf_size, fd) < 0) {
-        fprintf(stderr, "read_str_from_file: getline() failed - %s\n",
-                strerror(errno));
+        fprintf(stderr, "read_str_from_file (%s): getline() failed - %s\n",
+                path, strerror(errno));
         exit(EXIT_FAILURE);
     }
     fclose(fd);
 
     return buf;
 }
+
+void write_str_to_file(char const* path, char const* val) {
+    FILE* const fd = open_file(path, "w");
+    if (fprintf(fd, "%s", val) < 0) {
+        fprintf(stderr, "write_str_to_file (%s): fprintf failed - %s\n",
+                path, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+    fclose(fd);
+}
+

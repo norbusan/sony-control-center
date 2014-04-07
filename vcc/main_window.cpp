@@ -86,11 +86,15 @@ void MainWindow::setup_ui() {
         ui->btngrp_battery_protection->setId(ui->rad_battery_medium_protection, 1);
         ui->btngrp_battery_protection->setId(ui->rad_battery_no_protection, 0);
         switch(read_int_from_file(SONY_BATTERY_CHARGE_LIMITER)) {
-            case 2:
+            case 50:
                 ui->rad_battery_max_protection->setChecked(true);
                 break;
-            case 1:
+            case 80:
                 ui->rad_battery_medium_protection->setChecked(true);
+                break;
+            // it seems that 0 and 100 have the same value???
+            case 100:
+                ui->rad_battery_no_protection->setChecked(true);
                 break;
             case 0:
                 ui->rad_battery_no_protection->setChecked(true);
@@ -155,26 +159,38 @@ void MainWindow::setup_ui() {
 
     // Thermal Control
     if (check_file(SONY_THERMAL_NUM)) {
-        int const profiles = read_int_from_file(SONY_THERMAL_NUM);
+ 
+        char buf[64];
+        QString profile_names = read_str_from_file(SONY_THERMAL_NUM, buf, sizeof(buf)/sizeof(buf[0]));
+        QStringList profiles = profile_names.split(" ");
+        //int const profiles = read_int_from_file(SONY_THERMAL_NUM);
 
-        if (profiles > 2)
+        if (profiles.contains("balanced"))
+            ui->btngrp_thermal->setId(ui->rad_thermal_balanced, 0);
+        else
+            ui->rad_thermal_balanced->setEnabled(0);
+        if (profiles.contains("performance"))
+            ui->btngrp_thermal->setId(ui->rad_thermal_performance, 1);
+        else
+            ui->rad_thermal_performance->setEnabled(0);
+        if (profiles.contains("silent"))
             ui->btngrp_thermal->setId(ui->rad_thermal_silent, 2);
         else
             ui->rad_thermal_silent->setEnabled(0);
-
-        ui->btngrp_thermal->setId(ui->rad_thermal_performance, 1);
-        ui->btngrp_thermal->setId(ui->rad_thermal_balanced, 0);
-        switch(read_int_from_file(SONY_THERMAL)) {
-            case 2:
-                ui->rad_thermal_silent->setChecked(true);
-                break;
-            case 1:
-                ui->rad_thermal_performance->setChecked(true);
-                break;
-            case 0:
-                ui->rad_thermal_balanced->setChecked(true);
-                break;
+	    
+        QString curr_profile = read_str_from_file(SONY_THERMAL, buf, sizeof(buf)/sizeof(buf[0]));
+        if (!curr_profile.isEmpty() && curr_profile[curr_profile.length()-1] == '\n') {
+            curr_profile.remove(curr_profile.length()-1,1);
         }
+
+        if (curr_profile.compare("silent") == 0)
+            ui->rad_thermal_silent->setChecked(true);
+        else if (curr_profile.compare("performance") == 0)
+            ui->rad_thermal_performance->setChecked(true);
+        else if (curr_profile.compare("balanced") == 0)
+            ui->rad_thermal_balanced->setChecked(true);
+        else
+            qDebug() << "Current profile not recognized: " << curr_profile;
 
         connect(ui->btngrp_thermal, SIGNAL(buttonClicked(int)), this, SLOT(btngrp_thermal_button_clicked(int)));
     }
@@ -185,7 +201,17 @@ void MainWindow::chk_battery_fast_charge_changed(int state) {
     write_int_to_file(SONY_BATTERY_HIGHSPEED_CHRG, state == 2 ? 1 : 0);
 }
 void MainWindow::btngrp_battery_protection_button_clicked(int id) {
-    write_int_to_file(SONY_BATTERY_CHARGE_LIMITER, id);
+    switch(id) {
+      case (0):
+        write_int_to_file(SONY_BATTERY_CHARGE_LIMITER, 100);
+        break;
+      case (1):
+        write_int_to_file(SONY_BATTERY_CHARGE_LIMITER, 80);
+        break;
+      case (2):
+        write_int_to_file(SONY_BATTERY_CHARGE_LIMITER, 50);
+        break;
+    }
 }
 
 void MainWindow::chk_enable_kbd_bl_state_changed(int state) {
@@ -196,16 +222,16 @@ void MainWindow::hslider_kbd_timeout_value_changed(int val) {
     char const* txt = NULL;
     switch (val) {
         case 0:
-            txt = "10 seconds";
+            txt = "Always on";
             break;
         case 1:
-            txt = "30 seconds";
+            txt = "10 seconds";
             break;
         case 2:
-            txt = "60 seconds";
+            txt = "30 seconds";
             break;
         case 3:
-            txt = "Always on";
+            txt = "60 seconds";
             break;
     }
     ui->lbl_kbd_timeout_val->setText(txt);
@@ -241,10 +267,20 @@ void MainWindow::chk_enable_optdev_state_changed(int state) {
 }
 
 void MainWindow::btngrp_thermal_button_clicked(int id) {
-    int profiles = read_int_from_file(SONY_THERMAL_NUM);
-
-    if (id < profiles)
-        write_int_to_file(SONY_THERMAL, id);
+    
+    char const* txt = NULL;
+    switch (id) {
+        case 0:
+            txt = "balanced";
+            break;
+        case 1:
+            txt = "performance";
+            break;
+        case 2:
+            txt = "silent";
+            break;
+    }
+    write_str_to_file(SONY_THERMAL, txt);
 }
 
 void MainWindow::list_index_changed( int index )
