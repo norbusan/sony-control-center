@@ -59,10 +59,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->listWidget->item(0)->setIcon( QIcon::fromTheme( "battery" ) );
     ui->listWidget->item(1)->setIcon( QIcon::fromTheme( "input-keyboard" ) );
     ui->listWidget->item(2)->setIcon( QIcon::fromTheme( "input-mouse" ) );
-    ui->listWidget->item(3)->setIcon( QIcon::fromTheme( "video-projector" ) );
-    ui->listWidget->item(4)->setIcon( QIcon::fromTheme( "system-suspend-hibernate" ) );
+    ui->listWidget->item(3)->setIcon( QIcon::fromTheme( "video-display" ) );
+    ui->listWidget->item(4)->setIcon( QIcon::fromTheme( "screensaver" ) );
     ui->listWidget->item(5)->setIcon( QIcon::fromTheme( "drive-optical" ) );
-    ui->listWidget->item(6)->setIcon( QIcon::fromTheme( "cpu" ) );
+    ui->listWidget->item(6)->setIcon( QIcon::fromTheme( "utilities-system-monitor" ) );
 
     setup_ui();
 
